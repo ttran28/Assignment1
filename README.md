@@ -1,2 +1,2 @@
-# Tiffany Tran
-Project 1 for Rapid Java Development
+# Assignment 1 for Data Mining using Apriori Algorithm
+  by Tiffany Tran
