@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 /**
  * Data Mining - Dr. Ray Hashemi - Assignment 1
@@ -119,17 +120,42 @@ public class Assignment1 {
                 }
                 System.out.println();
             }
-            System.out.println("Correlation for " + arraylist.get(7).get(0) + " and "
-                    + arraylist.get(4).get(0) + " is: " + correlation(arraylist.get(7), arraylist.get(4)));
+//            System.out.println("Correlation for " + arraylist.get(7).get(0) + " and "
+//                    + arraylist.get(4).get(0) + " is: " + correlation(arraylist.get(7), arraylist.get(4)));
             System.out.println("The highest correlation coefficient is "
                     + df.format(highest) + " between " + a + " and " + b + ".");
-            System.out.println(arraylist.get(1));
+
+            //find lowest entropy
             System.out.println(arraylist.get(1).size());
-            System.out.println(mean(arraylist.get(1)));
+            System.out.println("Min:  " + probability(arraylist.get(1), 0));
 
         } catch (Exception ex) {
             System.out.println(ex);
         }
+    }
+
+    static double min(ArrayList<String> temp) {
+        double min = Double.parseDouble(temp.get(1)), val;
+        //i is 1 because 0 is the title
+        for (int i = 1; i < temp.size(); i++) {
+            val = Double.parseDouble(temp.get(i));
+            if (val < min) {
+                min = val;
+            }
+        }
+        return min;
+    }
+
+    static double max(ArrayList<String> temp) {
+        double max = Double.parseDouble(temp.get(1)), val;
+        //i is 1 because 0 is the title
+        for (int i = 1; i < temp.size(); i++) {
+            val = Double.parseDouble(temp.get(i));
+            if (max < val) {
+                max = val;
+            }
+        }
+        return max;
     }
 
     static double sum(ArrayList<String> temp) {
@@ -240,14 +266,25 @@ public class Assignment1 {
         return r;
     }
 
-    static double probability(ArrayList<String> a, double value) {
-        int size = a.size(), count = 0;
+    //combine list with temp dependent variable list
+    static LinkedHashMap<String, String> combineList(ArrayList<String> a, ArrayList<String> b) {
+        LinkedHashMap<String, String> t = new LinkedHashMap<>();
+        for (int i = 1; i < a.size(); i++) {
+            t.put(a.get(i), b.get(i));
+        }
+        return t;
+    }
+
+    //find probability of value in list
+    static int probability(LinkedHashMap<String, String> a, double value) {
+        int size = a.size();
+        int count1 = 0;
         for (int i = 1; i < size; i++) {
-            if (Double.parseDouble(a.get(i)) == value) {
-                count++;
+            if (Double.parseDouble(a.get(i)) >= value) {//fixxxxxxx
+                count1++;
             }
         }
-        return count;
+        return count1;
     }
 
     //method for entropy-based discretization
@@ -278,17 +315,16 @@ public class Assignment1 {
     }
 
     //find ent value
-    static double ent(ArrayList<String> a, double value) {
-        int size = a.size();
-        double ent = 0;
-        for (int i = 1; i < size; i++) {
-            double prop = probability(a, value);
-            //log2(prob of value in dependent variable)
-            ent -= prop * (Math.log(prop) / Math.log(2));
-        }
-        return ent;
-    }
-
+//    static double ent(ArrayList<String> a, double value) {
+//        int size = a.size();
+//        double ent = 0;
+//        for (int i = 1; i < size; i++) {
+//            double prop = probability(a, value);
+//            //log2(prob of value in dependent variable)
+//            ent -= prop * (Math.log10(prop) / Math.log10(2));
+//        }
+//        return ent;
+//    }
     //method for entropy-based discretization 
     static double infoGain(ArrayList<String> a, double value) {
 
